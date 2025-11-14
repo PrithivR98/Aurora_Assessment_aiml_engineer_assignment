@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Answering System</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="container">
+    <h1>Member Question Answering</h1>
+    <p>Ask a natural-language question about a member:</p>
+
+    <textarea id="question" placeholder="Example: What are Amira’s favorite restaurants?"></textarea>
+
+    <button onclick="ask()">Ask Question</button>
+
+    <div id="response-box" class="response-box"></div>
+</div>
+
+
+<script>
+    async function ask() {
+        const question = document.getElementById("question").value;
+        const responseBox = document.getElementById("response-box");
+
+        responseBox.innerHTML = "Thinking...";
+
+        const response = await fetch("/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: question })
+        });
+
+        const data = await response.json();
+        responseBox.innerHTML = "<strong>Answer:</strong> " + data.answer;
+    }
+</script>
+
+</body>
+</html>
